@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ogpay/app_router/app_router_constants.dart';
+import 'package:ogpay/common/extension/og_extension.dart';
 import 'package:ogpay/common/widgets/primary_cta_button.dart';
 import 'package:ogpay/utility/colors.dart';
 
@@ -99,35 +100,21 @@ class LoginCard extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 20),
                   const WelcomeBackHeader(),
-                  const SizedBox(height: 32),
                   const FieldLabel(text: "Email"),
-                  const SizedBox(height: 8),
                   EmailField(controller: emailController),
-                  const SizedBox(height: 16),
                   const FieldLabel(text: "Password"),
-                  const SizedBox(height: 8),
                   PasswordField(controller: passwordController),
-                  const SizedBox(height: 15),
                   const ForgetPasswordText(),
-                  const SizedBox(height: 25),
-                  PrimaryButton(
-                    title: "Login",
-                    onPressed: () {
-                      // Handle login action
-                    },
-                  ),
-                  const SizedBox(height: 20),
+                  PrimaryButton(title: "Login", onPressed: () {}),
                   SignUpContent(
                     onSignUpPressed: () {
                       context.push(AppRouteConstants.signUp);
                     },
                   ),
-                ],
+                ].spaced(16),
               ),
             ),
           ),

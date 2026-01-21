@@ -3,8 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:ogpay/app_router/app_router_constants.dart';
 import 'package:ogpay/common/extension/og_extension.dart';
 import 'package:ogpay/common/widgets/back_button_widget.dart';
+import 'package:ogpay/common/widgets/email_inputfield_widget.dart';
+import 'package:ogpay/common/widgets/password_inputfield_widget.dart';
 import 'package:ogpay/common/widgets/primary_cta_button.dart';
 import 'package:ogpay/utility/colors.dart';
+import 'package:ogpay/utility/strings.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.title});
@@ -15,13 +18,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -34,26 +42,19 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: BoxDecoration(gradient: AppColors.primaryGradient),
           child: Column(
             children: [
-              /// TOP WHITE SPACE
               SizedBox(
-                width: double.infinity, // 👈 forces full width
+                width: double.infinity,
                 child: Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 50, left: 16),
-                      child: BackButtonWidget(
-                        onPressed: () {
-                          context.pop();
-                        },
-                      ),
+                      child: BackButtonWidget(onPressed: () => context.pop()),
                     ),
-
                     const Spacer(),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 50, right: 30),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 50, right: 30),
                       child: Text(
-                        "Sign In",
+                        AppStrings.signIn,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -63,14 +64,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 50),
-
-              /// LOGIN CARD FILLS REST OF SCREEN
               Expanded(
                 child: LoginCard(
+                  formKey: _formKey,
                   emailController: emailController,
                   passwordController: passwordController,
+                  emailFocusNode: emailFocusNode,
+                  passwordFocusNode: passwordFocusNode,
                 ),
               ),
             ],
@@ -84,12 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
 class LoginCard extends StatelessWidget {
   const LoginCard({
     super.key,
+    required this.formKey,
     required this.emailController,
     required this.passwordController,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
   });
 
+  final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -99,109 +106,52 @@ class LoginCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
-      child: Column(
-        children: [
-          /// 🔼 FORM SECTION (TOP)
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const WelcomeBackHeader(),
-                  const FieldLabel(text: "Email"),
-                  EmailField(controller: emailController),
-                  const FieldLabel(text: "Password"),
-                  PasswordField(controller: passwordController),
-                  const ForgetPasswordText(),
-                  PrimaryButton(title: "Login", onPressed: () {}),
-                  SignUpContent(
-                    onSignUpPressed: () {
-                      context.push(AppRouteConstants.signUp);
-                    },
-                  ),
-                ].spaced(16),
+      child: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const WelcomeBackHeader(),
+              const FieldLabel(text: AppStrings.email),
+              EmailField(
+                controller: emailController,
+                focusNode: emailFocusNode,
+                nextFocusNode: passwordFocusNode,
               ),
-            ),
+              const FieldLabel(text: AppStrings.password),
+              PasswordField(
+                controller: passwordController,
+                focusNode: passwordFocusNode,
+              ),
+              ForgetPasswordText(
+                onForgotPasswordRedirection: () {
+                  context.push(AppRouteConstants.forgotPassword);
+                },
+              ),
+              PrimaryButton(
+                title: AppStrings.login,
+                onPressed: () {
+                  emailFocusNode.unfocus();
+                  passwordFocusNode.unfocus();
+
+                  if (formKey.currentState!.validate()) {
+                    // ✅ Valid
+                  }
+                },
+              ),
+
+              SignUpContent(
+                onSignUpPressed: () {
+                  context.push(AppRouteConstants.signUp);
+                },
+              ),
+            ].spaced(16),
           ),
-        ],
+        ),
       ),
     );
   }
-}
-
-class EmailField extends StatelessWidget {
-  const EmailField({super.key, required this.controller});
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: TextInputType.emailAddress,
-      cursorColor: AppColors.emeraldGreen,
-      decoration:
-          inputDecoration(
-            hintText: "Enter your email",
-            icon: Icons.email_outlined,
-          ).copyWith(
-            isDense: true,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 12,
-            ),
-          ),
-    );
-  }
-}
-
-class PasswordField extends StatelessWidget {
-  const PasswordField({super.key, required this.controller});
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: true,
-      cursorColor: AppColors.emeraldGreen,
-      decoration:
-          inputDecoration(
-            hintText: "Enter your password",
-            icon: Icons.lock_outline,
-          ).copyWith(
-            isDense: true,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 12,
-            ),
-          ),
-    );
-  }
-}
-
-InputDecoration inputDecoration({
-  required String hintText,
-  required IconData icon,
-}) {
-  return InputDecoration(
-    hintText: hintText,
-    prefixIcon: Icon(icon, size: 15),
-    filled: true,
-    fillColor: Colors.white,
-    labelStyle: TextStyle(color: Colors.black),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25),
-      borderSide: BorderSide(color: Colors.grey.shade300),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25),
-      borderSide: BorderSide(color: AppColors.emeraldGreen),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25),
-      borderSide: BorderSide(color: Colors.grey.shade400),
-    ),
-  );
 }
 
 class FieldLabel extends StatelessWidget {
@@ -227,7 +177,7 @@ class WelcomeBackHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Welcome Back",
+            AppStrings.welcomeOnboarding,
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -236,7 +186,7 @@ class WelcomeBackHeader extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            "We're so happy to see you again",
+            AppStrings.welcomeBack,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16, color: Colors.black),
           ),
@@ -247,16 +197,22 @@ class WelcomeBackHeader extends StatelessWidget {
 }
 
 class ForgetPasswordText extends StatelessWidget {
-  const ForgetPasswordText({super.key});
+  final VoidCallback onForgotPasswordRedirection;
+  const ForgetPasswordText({
+    super.key,
+    required this.onForgotPasswordRedirection,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () {
+          onForgotPasswordRedirection();
+        },
         child: const Text(
-          "Forgot Password?",
+          AppStrings.forgotPassword,
           style: TextStyle(color: Colors.black, fontStyle: FontStyle.normal),
         ),
       ),
@@ -274,7 +230,7 @@ class SignUpContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          "Don't have an account? ",
+          AppStrings.dontHaveAccount,
           style: TextStyle(color: Colors.black),
         ),
         TextButton(
@@ -282,7 +238,7 @@ class SignUpContent extends StatelessWidget {
             onSignUpPressed();
           },
           child: const Text(
-            "Sign Up",
+            AppStrings.signup,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),

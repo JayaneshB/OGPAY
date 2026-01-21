@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ogpay/app_router/app_router_constants.dart';
 import 'package:ogpay/common/extension/og_extension.dart';
+import 'package:ogpay/common/widgets/back_button_widget.dart';
 import 'package:ogpay/common/widgets/primary_cta_button.dart';
 import 'package:ogpay/utility/colors.dart';
 
@@ -38,9 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity, // 👈 forces full width
                 child: Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 50, left: 16),
-                      child: BackButtonWidget(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50, left: 16),
+                      child: BackButtonWidget(
+                        onPressed: () {
+                          context.pop();
+                        },
+                      ),
                     ),
 
                     const Spacer(),
@@ -282,27 +287,6 @@ class SignUpContent extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class BackButtonWidget extends StatelessWidget {
-  const BackButtonWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
-          onPressed: () => context.pop(),
-        ),
-      ),
     );
   }
 }

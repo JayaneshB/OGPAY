@@ -33,7 +33,32 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
               /// TOP WHITE SPACE
-              SizedBox(height: MediaQuery.of(context).padding.top + 100),
+              SizedBox(
+                width: double.infinity, // 👈 forces full width
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 50, left: 16),
+                      child: BackButtonWidget(),
+                    ),
+
+                    const Spacer(),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50, right: 30),
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 50),
 
               /// LOGIN CARD FILLS REST OF SCREEN
               Expanded(
@@ -105,11 +130,6 @@ class LoginCard extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-
-          Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              
-            ],
           ),
         ],
       ),
@@ -275,6 +295,27 @@ class SignUpContent extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class BackButtonWidget extends StatelessWidget {
+  const BackButtonWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+          onPressed: () => context.pop(),
+        ),
+      ),
     );
   }
 }

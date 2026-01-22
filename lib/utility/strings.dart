@@ -16,4 +16,7 @@ class AppStrings {
   static const welcomeToOGPay = 'Welcome to OGPAY';
   static const dateOfBirth = 'Date of Birth';
   static const confirmPassword = 'Confirm Password';
+  static const name = "Name";
+  static const dob = "Date of Birth";
+  static const selectDate = "Select Date";
 }

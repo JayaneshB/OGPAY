@@ -45,25 +45,29 @@ class _EmailFieldState extends State<EmailField> {
       onFieldSubmitted: (_) =>
           FocusScope.of(context).requestFocus(widget.nextFocusNode),
       validator: Validators.email,
-      decoration: InputDecoration(
-        hintText: AppStrings.enterYourEmail,
-        prefixIcon: Icon(Icons.lock_outline, size: 15),
-        filled: true,
-        fillColor: Colors.white,
-        labelStyle: TextStyle(color: Colors.black),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: AppColors.emeraldGreen),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: Colors.grey.shade400),
-        ),
-      ).copyWith(errorStyle: const TextStyle(color: Colors.red, fontSize: 12)),
+      decoration:
+          InputDecoration(
+            hintText: AppStrings.enterYourEmail,
+            prefixIcon: Icon(Icons.lock_outline, size: 15),
+            filled: true,
+            fillColor: Colors.white,
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: AppColors.emeraldGreen),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+          ).copyWith(
+            isDense: true,
+            errorStyle: const TextStyle(color: Colors.red, fontSize: 12),
+          ),
     );
   }
 }

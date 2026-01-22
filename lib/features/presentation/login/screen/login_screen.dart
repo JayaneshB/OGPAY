@@ -178,7 +178,7 @@ class WelcomeBackHeader extends StatelessWidget {
           Text(
             AppStrings.welcomeOnboarding,
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 25,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

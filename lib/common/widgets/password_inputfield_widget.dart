@@ -42,25 +42,29 @@ class _PasswordFieldState extends State<PasswordField> {
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => widget.focusNode.unfocus(),
       validator: Validators.password,
-      decoration: InputDecoration(
-        hintText: AppStrings.enterYourPassword,
-        prefixIcon: Icon(Icons.lock_outline, size: 15),
-        filled: true,
-        fillColor: Colors.white,
-        labelStyle: TextStyle(color: Colors.black),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: AppColors.emeraldGreen),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(color: Colors.grey.shade400),
-        ),
-      ).copyWith(errorStyle: const TextStyle(color: Colors.red, fontSize: 12)),
+      decoration:
+          InputDecoration(
+            hintText: AppStrings.enterYourPassword,
+            prefixIcon: Icon(Icons.lock_outline, size: 15),
+            filled: true,
+            fillColor: Colors.white,
+            labelStyle: TextStyle(color: Colors.black),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: AppColors.emeraldGreen),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+          ).copyWith(
+            isDense: true,
+            errorStyle: const TextStyle(color: Colors.red, fontSize: 12),
+          ),
     );
   }
 }

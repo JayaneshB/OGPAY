@@ -11,4 +11,9 @@ class AppStrings {
   static const welcomeBack = "We're so happy to see you again";
   static const email = 'Email';
   static const password = 'Password';
+  static const continueText = 'Continue';
+  static const createAccount = "Let's create your account";
+  static const welcomeToOGPay = 'Welcome to OGPAY';
+  static const dateOfBirth = 'Date of Birth';
+  static const confirmPassword = 'Confirm Password';
 }

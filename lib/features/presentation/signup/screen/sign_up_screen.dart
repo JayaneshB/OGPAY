@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ogpay/app_router/app_router_constants.dart';
 import 'package:ogpay/common/extension/og_extension.dart';
 import 'package:ogpay/common/widgets/back_button_widget.dart';
 import 'package:ogpay/common/widgets/email_inputfield_widget.dart';
@@ -9,14 +8,14 @@ import 'package:ogpay/common/widgets/primary_cta_button.dart';
 import 'package:ogpay/utility/colors.dart';
 import 'package:ogpay/utility/strings.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class Signupscreen extends StatefulWidget {
+  const Signupscreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<Signupscreen> createState() => _SignupscreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupscreenState extends State<Signupscreen> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -53,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Padding(
                       padding: EdgeInsets.only(top: 50, right: 30),
                       child: Text(
-                        AppStrings.signIn,
+                        AppStrings.signup,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -123,13 +122,8 @@ class LoginCard extends StatelessWidget {
                 controller: passwordController,
                 focusNode: passwordFocusNode,
               ),
-              ForgetPasswordText(
-                onForgotPasswordRedirection: () {
-                  context.push(AppRouteConstants.forgotPassword);
-                },
-              ),
               PrimaryButton(
-                title: AppStrings.login,
+                title: AppStrings.continueText,
                 onPressed: () {
                   emailFocusNode.unfocus();
                   passwordFocusNode.unfocus();
@@ -137,12 +131,6 @@ class LoginCard extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     // ✅ Valid
                   }
-                },
-              ),
-
-              SignUpContent(
-                onSignUpPressed: () {
-                  context.push(AppRouteConstants.signUp);
                 },
               ),
             ].spaced(16),
@@ -191,57 +179,6 @@ class WelcomeBackHeader extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ForgetPasswordText extends StatelessWidget {
-  final VoidCallback onForgotPasswordRedirection;
-  const ForgetPasswordText({
-    super.key,
-    required this.onForgotPasswordRedirection,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () {
-          onForgotPasswordRedirection();
-        },
-        child: const Text(
-          AppStrings.forgotPassword,
-          style: TextStyle(color: Colors.black, fontStyle: FontStyle.normal),
-        ),
-      ),
-    );
-  }
-}
-
-class SignUpContent extends StatelessWidget {
-  final VoidCallback onSignUpPressed;
-  const SignUpContent({super.key, required this.onSignUpPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          AppStrings.dontHaveAccount,
-          style: TextStyle(color: Colors.black),
-        ),
-        TextButton(
-          onPressed: () {
-            onSignUpPressed();
-          },
-          child: const Text(
-            AppStrings.signup,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
     );
   }
 }

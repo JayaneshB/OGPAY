@@ -22,4 +22,21 @@ class Validators {
     }
     return null;
   }
+
+  static String? confirmPassword(String? password, String? confirmPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return 'Confirm your password';
+    }
+    if (password != confirmPassword) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
+  static String? dateOfBirth(DateTime? dob) {
+    if (dob == null) {
+      return 'Date of Birth is required';
+    }
+    return null;
+  }
 }
